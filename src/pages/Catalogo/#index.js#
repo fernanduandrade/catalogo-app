@@ -1,3 +1,4 @@
+import { useBackButton } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
@@ -26,7 +27,8 @@ export default function Catalogo() {
 			price: 200,
 		}
 	]);
-    
+    const [teste, setTeste] = useState([]);
+    teste.
 	return (
 	    <Container>
 		<ProductContainer>

@@ -2,20 +2,27 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Catalogo from './pages/Catalogo';
+
+import Header from './components/Header/';
+import Catalogo from './pages/Catalogo/';
 
 const Stack = createStackNavigator();
 
 export default function Routes() {
     return (
         <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen
-                    name="Catalogo"
-                    component={Catalogo}
+            <Stack.Navigator
+        		screenOptions={{
+        			headerShown: true,
+        			cardStyle: { backgroundColor: '#313746'},
+        	}}
+        		initialRouteName="Catálogo"
+            >
+                <Stack.Screen name='Catálogo' component={Catalogo} 
                     options={{
-                        title: 'Catálogo',
-                        headerTitleAlign: 'center'
+                    	headerShown: true, 
+                    	headerTransparent: true,
+                    	headerTitle: () => <Header />,
                     }}
                 />
             </Stack.Navigator>
