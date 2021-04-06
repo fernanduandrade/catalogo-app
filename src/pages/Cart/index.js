@@ -28,6 +28,7 @@ import {
 
 import formatValue from '../../utils/formatValue';
 import EmptyCart from '../../components/EmptyCart';
+import produce from 'immer';
 
 
 export default function Cart() {
@@ -47,6 +48,18 @@ export default function Cart() {
 		
 		return formatValue(cartAmount)
 	}, [products]);
+
+	function increment(product) {
+		dispatch(CartActions.updateAmountRequest(product.id, produce.amount + 1));
+	}
+
+	function decrement(product) {
+		dispatch(CartActions.updateAmountRequest(product.id, produce.amount - 1));
+	}
+
+	function removeFromCart(id) {
+		dispatch(CartActions.removeFromCart(id));
+	}
 
 	return (
 		<Container>
@@ -76,10 +89,12 @@ export default function Cart() {
 								</ProductPriceContainer>
 							</ProductTitleContainer>
 							<ActionContainer>
-								<ActionButton onPress={() => { }}>
+								<ActionButton onPress={() => increment(item)}>
 									<FeatherIcon name="plus" color="#E83F5B" size={16} />
 								</ActionButton>
-								<ActionButton onPress={() => { }}>
+								<ActionButton onPress={() => 
+									item.amount > 1 ? decrement(item) : removeFromCart(item.id)
+								}>
 									<FeatherIcon name="minus" color="#E83F5B" size={16} />
 								</ActionButton>
 							</ActionContainer>
