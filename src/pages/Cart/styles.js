@@ -91,7 +91,7 @@ export const ActionButton = styled.TouchableOpacity`
 
 export const TotalProductsContainer = styled.View`
     bottom: 0;
-    positoin: absolute;
+    position: absolute;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;

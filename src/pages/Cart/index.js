@@ -1,6 +1,10 @@
-import React, {useState} from 'react';
+import React, {useMemo} from 'react';
 import { View } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+
+import { useDispatch, useSelector } from 'react-redux';
+
+import * as CartActions  from '../../store/modules/cart/actions';
 
 import {
     Container,
@@ -23,31 +27,26 @@ import {
 } from './styles';
 
 import formatValue from '../../utils/formatValue';
+import EmptyCart from '../../components/EmptyCart';
+
 
 export default function Cart() {
-    const [products, setProducts] = useState([
-		{
-			id: '1',
-			title: 'Assinatura Digital',
-			image_url: 'https://a-static.mlcdn.com.br/618x463/smart-tv-led-32-samsung-32t4300a-wi-fi-hdr-2-hdmi-1-usb/magazineluiza/225608200/19fc4c02d807e26adb344bdc47f19611.jpg',
-			quantity: 6,
-			price: 150,
-		},
-		{
-			id: '2',
-			title: 'Assinatura Digital',
-			image_url: 'https://a-static.mlcdn.com.br/618x463/smart-tv-led-32-samsung-32t4300a-wi-fi-hdr-2-hdmi-1-usb/magazineluiza/225608200/19fc4c02d807e26adb344bdc47f19611.jpg',
-			quantity: 3,
-			price: 400,
-		},
-		{
-			id: '3',
-			title: 'Assinatura Digital',
-			image_url: 'https://a-static.mlcdn.com.br/618x463/smart-tv-led-32-samsung-32t4300a-wi-fi-hdr-2-hdmi-1-usb/magazineluiza/225608200/19fc4c02d807e26adb344bdc47f19611.jpg',
-			quantity: 7,
-			price: 900,
-		},
-	]);
+	const dispatch = useDispatch();
+    const products = useSelector(({cart}) => cart);
+
+	const cartSize = useMemo(() => {
+		return products.length || 0;
+	}, [products]);
+
+	const cartTotal = useMemo(() => {
+		const cartAmount = products.reduce((acc, product) => {
+			const totalPrice = acc + product.price * product.amount;
+
+			return totalPrice;
+		}, 0);
+		
+		return formatValue(cartAmount)
+	}, [products]);
 
 	return (
 		<Container>
@@ -55,6 +54,7 @@ export default function Cart() {
 				<ProductList
 					data={products}
 					keyExtractor={(item) => item.id}
+					ListEmptyComponent={<EmptyCart />}
 					ListFooterComponent={<View />}
 					ListFooterComponentStyle={{ height: 180 }}
 					renderItem={({ item }) => (
@@ -70,7 +70,7 @@ export default function Cart() {
 									<TotalContainer>
 										<ProductQuantity>{`${item.quantity}x`}</ProductQuantity>
 										<ProductPrice>
-											{formatValue(item.price * item.quantity)}
+											{formatValue(item.price * item.amount)}
 										</ProductPrice>
 									</TotalContainer>
 								</ProductPriceContainer>
@@ -87,6 +87,11 @@ export default function Cart() {
 					)}
 				/>
 			</ProductContainer>
+			<TotalProductsContainer>
+				<FeatherIcon name='shopping-cart' color='#fff' size={24}/>
+				<TotalProductsText>{cartSize} {cartSize === 1 ? 'item' : 'itens'}</TotalProductsText>
+				<SubTotalValue>{cartTotal}</SubTotalValue>
+			</TotalProductsContainer>
 		</Container>
 	);
 
