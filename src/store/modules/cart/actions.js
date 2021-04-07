@@ -23,7 +23,7 @@ export function updateAmountRequest(id, amount) {
     return {
         type: '@cart/UPDATE_AMOUNT_REQUEST',
         id,
-        amount
+        amount,
     };
 }
 

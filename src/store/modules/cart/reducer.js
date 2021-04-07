@@ -20,7 +20,7 @@ export default function cart(state = [], action) {
                 if(productIndex >=0) {
                     draft[productIndex].amount = Number(action.amount);
                 }
-            })
+            });
         default:
             return state;
     }

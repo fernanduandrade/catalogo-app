@@ -2,6 +2,7 @@ import { all, takeLatest, select, call, put } from 'redux-saga/effects';
 import formatValue from '../../../utils/formatValue';
 
 import {addToCartSuccess, updateAmountSuccess} from './actions';
+import api from '../../../services/api';
 
 function* addToCart({id}) {
     const productExists = yield select((state) =>
@@ -10,14 +11,14 @@ function* addToCart({id}) {
 
     const currentAmount = productExists ? productExists.amount : 0;
     const amount = currentAmount + 1;
+
     if(productExists) {
         //dispatch action
         yield put(updateAmountSuccess(id, amount));
 
     } else {
         
-        const response = yield call(api.get, `products/${id}`);
-
+        const response = yield call(api.get, `${id}/`); 
         const data = {
             ...response.data,
             amount: 1,
@@ -28,12 +29,18 @@ function* addToCart({id}) {
     }
 };
 
-function* updateAmount(id, amount) {
-    if(amount <= 0) return;
-    yield put(updateamountSuccess(id, amount))
+function* updateAmount({id, amount}) {
+   
+    if(amount <= 0) {
+	 console.log("clicado"); // :(
+	return;
+    } else {
+	console.log("clicado, state alterado");
+	yield put(updateAmountSuccess(id, amount));
+    }
 }
 
 export default all([
     takeLatest('@cart/ADD_REQUEST', addToCart),
-    takeLatest('@cart/UPDATE_AMOUNT_REQUEST', updateAmount)
+    takeLatest('@cart/UPDATE_AMOUNT_REQUEST', updateAmount),
 ]);

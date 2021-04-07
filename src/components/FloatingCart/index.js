@@ -23,7 +23,7 @@ export default function FloatingCart()  {
 
 	const cartTotal = useMemo(() => {
 		const cartAmount = products.reduce((acc, product) => {
-			const totalPrice = acc + product.price * product.quantity
+			const totalPrice = acc + product.price * product.amount
 			return totalPrice;
 		}, 0);
 

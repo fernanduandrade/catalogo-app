@@ -23,7 +23,7 @@ import {
     TotalProductsContainer,
     TotalProductsText,
     SubTotalValue,
-    ProductTitle,
+	ProductTitle,
 } from './styles';
 
 import formatValue from '../../utils/formatValue';
@@ -33,6 +33,7 @@ import EmptyCart from '../../components/EmptyCart';
 export default function Cart() {
     const dispatch = useDispatch();
     const products = useSelector(({cart}) => cart);
+    console.log(products);
     
     const cartSize = useMemo(() => {
 	return products.length || 0;

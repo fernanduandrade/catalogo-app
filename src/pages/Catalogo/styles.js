@@ -37,7 +37,7 @@ export const ProductImage = styled.Image`
 `;
 export const ProductTitle = styled.Text`
     color: #b9c0d2;
-    font-size: 22px;
+    font-size: 16px;
     margin-top: 10px;
     font-weight: 400;
     line-height: 40px;

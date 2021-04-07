@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import { useDispatch } from 'react-redux';
 import FloatingCart from '../../components/FloatingCart';
 import * as CartActions from '../../store/modules/cart/actions';
+
+import api from '../../services/api';
 
 import formatValue from '../../utils/formatValue';
 
@@ -21,20 +23,20 @@ import {
 } from './styles';
 export default function Catalogo() {
 	const dispatch = useDispatch();
-    const [products, setProducts] = useState([
-		{
-			id: "1",
-			title: "Assinatura Trimestral",
-			image_url: "https://res.cloudinary.com/robertosousa1/image/upload/v15944492578/dio/quarterly_subscription_yjolpc.png",
-			price: 350
-		},
-		{
-			id: "2",
-			title: "Assinatura Anual",
-			image_url: "https://res.cloudinary.com/robertosousa1/image/upload/v15944492578/dio/annual_subscription_qyolci.png",
-			price: 60
-		}
-	]);
+    const [products, setProducts] = useState();
+    
+	useEffect(() => {
+		async function loadData() {
+			try{
+				const response = await api.get();
+				setProducts(response.data);
+			} catch(err) {
+				console.log(err);
+			}
+		};
+
+		loadData();
+	}, []);
 
 	function handlerAddToCart(id) {
 		dispatch(CartActions.addToCartRequest(id))
